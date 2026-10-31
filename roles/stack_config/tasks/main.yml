@@ -1,0 +1,50 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for stack_config
+
+- name: Ensure Apache, MariaDB, and PHP-FPM services are enabled and started
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started 
+    enabled: true
+
+  loop:
+    - httpd
+    - mariadb
+    - php-fpm
+
+- name: Allow HTTP and HTTPS traffic through the firewall
+  ansible.posix.firewalld: 
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  
+  loop: 
+    - http 
+    - https
+  ignore_errors: true
+
+- name: Create the dedicated application system account for WordPress 
+  ansible.builtin.user:
+    name: wp_user
+    shell: /sbin/nologin
+    system: true
+    create_home: false
+
+- name: Ensure target WordPress directory structure exists 
+  ansible.builtin.file: 
+    path: "{{ wp_install_dir }}"
+    state: directory 
+    owner: apache
+    group: apache
+    mode: '0755' 
+
+- name: Set up directory configuration permissions for Apache web root
+  ansible.builtin.file:
+    path: "{{ wp_web_root }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755' 
+

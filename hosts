@@ -1,0 +1,2 @@
+[wordpress_servers]
+almalinux ansible_host=10.2.37.108 ansible_user=egregg

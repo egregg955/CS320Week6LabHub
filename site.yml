@@ -1,0 +1,11 @@
+---
+
+- name: Deploy Complete WordPress Stack via Modular Roles
+  hosts: wordpress_servers 
+  become: true
+
+  roles:
+    - stack_install 
+    - stack_config
+    - wordpress 
+

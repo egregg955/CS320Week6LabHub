@@ -1,0 +1,45 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for stack_install
+
+- name: Install EPEL repository definition
+  ansible.builtin.dnf: 
+    name: epel-release 
+    state: present
+
+- name: Upgrade all active core system packages
+  ansible.builtin.dnf: 
+    name: "*"
+    state: latest 
+
+- name: Install primary web infrastructure components
+  ansible.builtin.dnf:
+    name:
+      - httpd
+      - httpd-tools
+      - tar
+      - wget
+    state: present 
+
+- name: Install MariaDB database architecture
+  ansible.builtin.dnf:
+    name:
+      - mariadb-server
+      - mariadb
+      - python3-PyMySQL
+    state: present
+
+- name: Install PHP runtime engine and core application extensions
+  ansible.builtin.dnf: 
+    name:
+      - php 
+      - php-fpm
+      - php-mysqlnd
+      - php-gd
+      - php-xml
+      - php-mbstring 
+      - php-json
+      - php-intl 
+      - php-zip
+    state: present
+
